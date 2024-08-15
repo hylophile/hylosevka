@@ -9,6 +9,7 @@ glyph-block Letter-Latin-Upper-AA-AO : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Letter-Latin-Lower-AE-OE : SubDfAndShift
+	glyph-block-import Letter-Latin-Lower-M : MEnoughSpaceForFullSerifs dfM
 
 	do "A glyphs"
 		glyph-block-import Letter-Latin-Upper-A : AConfig AMaskShape ALetterShape
@@ -96,7 +97,7 @@ glyph-block Letter-Latin-Upper-AA-AO : begin
 							intersection
 								MaskAbove (height - Stroke)
 								with-transform [ApparentTranslate topSerifGap 0] [refer-glyph leftMask]
-							with-transform [ApparentTranslate (OX - 0.1) 0] [refer-glyph rightMask]
+							with-transform [ApparentTranslate (OX - TINY) 0] [refer-glyph rightMask]
 
 	do "AO"
 		derive-multi-part-glyphs 'AO' 0xA734 {"AA/Left" "AA/LeftMask" "OO/right"}
@@ -116,7 +117,7 @@ glyph-block Letter-Latin-Upper-AA-AO : begin
 				include : with-transform [ApparentTranslate shift 0]
 					union [Base subDf CAP df.mvs] [Slabs subDf CAP]
 
-		select-variant "AU/Right" (follow -- 'U/noTopLeftSerif')
+		select-variant "AU/Right" (follow -- [conditional-follow [MEnoughSpaceForFullSerifs : dfM] 'AU/U/full' 'AU/U/reduced'])
 
 	do "AU"
 		select-variant 'AA/AU/Left' (follow -- 'A')
@@ -168,7 +169,7 @@ glyph-block Letter-Latin-Upper-AA-AO : begin
 				set-mark-anchor 'cvDecompose' 0 0
 				include : letterShape df CAP 0 0.1 0.28
 
-		select-variant "cyrl/Rha/left" (follow -- 'P')
+		select-variant "cyrl/Rha/left" (follow -- 'cyrl/Er')
 		select-variant "cyrl/Rha/right"
 
 		derive-multi-part-glyphs "cyrl/Rha" 0x516 {'cyrl/Rha/left' 'cyrl/Rha/right'} BuildRha
